@@ -59,7 +59,7 @@ class RailRoad
   def add_train
     puts "На какой станции формируется состав"
     stations_list
-    station_index = gets.chomp.to_i
+    station_index = gets.chomp.to_i - 1
 
     puts "Задайте номер поезда"
     train_number = gets.chomp.to_i
@@ -74,7 +74,7 @@ class RailRoad
     
     train = train_type == 1 ? PassengerTrain.new(train_number, train_type, wagon_count) : CargoTrain.new(train_number, train_type, wagon_count)
     puts "Поезд номер #{train_number} создан"
-    self.trains << train
+    stations[station_index].add_train(train)
   end
   
   # Helpers
