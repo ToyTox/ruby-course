@@ -1,8 +1,10 @@
 class RailRoad
   attr_accessor :stations
+  attr_accessor :routes
 
   def initialize
     @stations = []
+    @routes = []
   end
 
   def menu
@@ -26,9 +28,15 @@ class RailRoad
       add_train
       puts ""
     when 3
-      puts "Создание маршрута..."
+      add_route
+      puts ""
       # управлять станциями в нем (добавлять, удалять)
-      # case 
+      puts "Перейти в управление маршрутами?"
+      puts "1 - Да"
+      puts "2 - Нет"
+      answer = gets.chomp.to_i
+
+      route_control if answer == 1
     when 4
       puts "Назначить маршрут поезду..."
     when 5
@@ -76,6 +84,48 @@ class RailRoad
     puts "Поезд номер #{train_number} создан"
     stations[station_index].add_train(train)
   end
+
+  def add_route
+    puts "Выберите начальную станцию"
+    stations_list
+    start_station_index = gets.chomp.to_i - 1
+
+    puts "Выберите конечную станцию"
+    stations_list
+    end_station_index = gets.chomp.to_i - 1
+
+    route = Route.new(stations[start_station_index], stations[end_station_index])
+    self.routes << route
+    @current_station_index = 0
+  end
+
+  def route_control
+    puts "Выберите маршрут"
+    routes_list
+    route_index = gets.chomp.to_i - 1
+
+    while true
+      puts "Выберите действие с маршрутом"
+      puts "1 - Добавить станцию в маршрут"
+      puts "2 - Удалить станцию из маршрута"
+      puts "0 - Маршрут готов"
+      route_control = gets.chomp.to_i
+      break if route_control == 0
+
+      puts "Выберите станцию"
+        stations_list
+        station_index = gets.chomp.to_i - 1
+      case route_control
+      when 1
+        routes[route_index].add_route(stations[station_index])
+      when 2
+        routes[route_index].remove_route(stations[station_index])
+      else
+        "Такой команды не существует"
+      end
+    end
+    
+  end
   
   # Helpers
 
@@ -100,6 +150,13 @@ class RailRoad
     puts "Список поездов на станции #{station.name}:"
     station.trains.each_with_index do |train, idx|
       puts "#{idx + 1} - Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagon_count} вагон(а/ов)"
+    end
+  end
+
+  def routes_list
+    puts "Список маргрутов:"
+    self.routes.each_with_index do |route, idx|
+      puts "#{idx + 1} - #{route.start_station} - #{route.end_station}"
     end
   end
 
