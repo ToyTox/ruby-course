@@ -12,10 +12,11 @@ class RailRoad
     puts "1 - Создать станцию"
     puts "2 - Создать поезд"
     puts "3 - Создать маршрут"
-    puts "4 - Назначить маршрут поезду"
-    puts "5 - Добавить вагон к поезду"
-    puts "6 - Отправить поезд на станцию"
-    puts "7 - Посмотреть список поездов на станции"
+    puts "4 - Управлять маршрутом"
+    puts "5 - Назначить маршрут поезду"
+    puts "6 - Добавить вагон к поезду"
+    puts "7 - Отправить поезд на станцию"
+    puts "8 - Посмотреть список поездов на станции"
     puts "0 - Выход"
 
     answer = gets.chomp.to_i
@@ -38,14 +39,17 @@ class RailRoad
 
       route_control if answer == 1
     when 4
-      puts "Назначить маршрут поезду..."
+      route_control
+      puts "Управлять маршрут поезду..."
     when 5
-      puts "Добавить вагон к поезду..."
+      puts "Назначить маршрут поезду..."
     when 6
+      puts "Добавить вагон к поезду..."
+    when 7
       puts "Отправить поезд на станцию..."
       # Показать станция, которая впереди, которая сзади
       # двигать только на одну стацию, не дальше
-    when 7
+    when 8
       puts "Посмотреть список поездов на станции..."
     when 0
       puts "Досвидания"
@@ -117,9 +121,11 @@ class RailRoad
         station_index = gets.chomp.to_i - 1
       case route_control
       when 1
-        routes[route_index].add_route(stations[station_index])
+        routes[route_index].add_station(stations[station_index])
+        puts routes[route_index].inspect
       when 2
-        routes[route_index].remove_route(stations[station_index])
+        routes[route_index].remove_station(stations[station_index])
+        puts routes[route_index].inspect
       else
         "Такой команды не существует"
       end
@@ -171,6 +177,10 @@ class RailRoad
     self.stations.each_with_index do |station, idx|
       station.add_train(trains[idx][1] == 1 ? PassengerTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]) : CargoTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]))
     end
+
+    route = Route.new(stations[0], stations[1])
+    self.routes << route
+    @current_station_index = 0
   end
 end
 
