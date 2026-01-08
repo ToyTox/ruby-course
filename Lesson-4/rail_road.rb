@@ -40,9 +40,20 @@ class RailRoad
       route_control if answer == 1
     when 4
       route_control
-      puts "Управлять маршрут поезду..."
+      puts ""
     when 5
-      puts "Назначить маршрут поезду..."
+      puts "Выберите маршрут"
+      routes_list
+      route_index = gets.chomp.to_i - 1
+      station = routes[route_index].start_station
+      puts "Первая станция в маршрте #{routes[route_index].start_station.name}"
+
+      trains_list_on_station(route_index)
+      puts "Выберите поезд, которому хотите назначить маршрут"
+      train_index = gets.chomp.to_i - 1
+
+      station.trains[train_index].set_route(routes[route_index])
+      puts "Поезду N #{station.trains[train_index].number} присвоен маршрут #{routes[route_index].start_station.name} - #{routes[route_index].end_station.name}"
     when 6
       puts "Добавить вагон к поезду..."
     when 7
@@ -54,7 +65,7 @@ class RailRoad
     when 0
       puts "Досвидания"
     when 99
-      puts trains_list
+      puts trains_list_on_station
     else
       puts "Такой команды не существует"
     end
@@ -146,10 +157,12 @@ class RailRoad
     @stations[index]
   end
   
-  def trains_list
-    puts "Выберите станцию:"
-    stations_list
-    station_index = gets.chomp.to_i - 1
+  def trains_list_on_station(station_index = nil)
+    unless station_index
+      puts "Выберите станцию:"
+      stations_list
+      station_index = gets.chomp.to_i - 1
+    end
 
     station = find_station(station_index)
 
@@ -162,7 +175,7 @@ class RailRoad
   def routes_list
     puts "Список маргрутов:"
     self.routes.each_with_index do |route, idx|
-      puts "#{idx + 1} - #{route.start_station} - #{route.end_station}"
+      puts "#{idx + 1} - #{route.start_station.name} - #{route.end_station.name}"
     end
   end
 

@@ -29,6 +29,10 @@ class Train
     self.wagon_count -= 1 if speed == 0
   end
 
+  def set_route(route)
+    self.route = route
+  end
+
   def next_station
     routes.stations[current_station_index + 1]
   end
