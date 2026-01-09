@@ -2,7 +2,7 @@ class Train
   attr_accessor :speed
   attr_reader :number
   attr_reader :type
-  attr_accessor :wagon_count
+  attr_accessor :wagons
   attr_accessor :route
   attr_reader :current_station_index
 
@@ -10,7 +10,7 @@ class Train
     @speed = 0
     @number = number
     @type = type
-    @wagon_count = wagon_count
+    @wagons = Wagon.new(wagon_count, type)
   end
 
   def speed_up
@@ -19,14 +19,6 @@ class Train
 
   def speed_down
     self.speed -= 10 if speed > 0
-  end
-
-  def add_wagon
-    self.wagon_count += 1 if speed == 0
-  end
-
-  def remove_wagon
-    self.wagon_count -= 1 if speed == 0
   end
 
   def set_route(route)
