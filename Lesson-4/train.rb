@@ -4,13 +4,14 @@ class Train
   attr_reader :type
   attr_accessor :wagons
   attr_accessor :route
-  attr_reader :current_station_index
+  attr_accessor :current_station_index
 
   def initialize(number, type, wagon_count)
     @speed = 0
     @number = number
     @type = type
     @wagons = Wagon.new(wagon_count, type)
+    @current_station_index = 0
   end
 
   def speed_up
@@ -26,18 +27,19 @@ class Train
   end
 
   def next_station
-    routes.stations[current_station_index + 1]
+    self.route.stations[self.current_station_index + 1]
   end
 
   def previous_station
-    routes.stations[current_station_index - 1] if current_station_index >= 0
+    self.route.stations[self.current_station_index - 1] if self.current_station_index >= 0
   end
 
   def current_station
-    routes.stations[current_station_index]
+    self.route.stations[self.current_station_index]
   end
 
   def move_forward
+    puts current_station
     self.current_station_index += 1 if next_station
   end
 

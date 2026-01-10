@@ -11,6 +11,10 @@ class Station
     trains << train
   end
 
+  def remove_train(train_index)
+    trains.delete_at(train_index)
+  end
+
   def trains_by_types(type)
     trains.filter{ |train| train.type == type }.count
   end

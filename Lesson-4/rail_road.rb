@@ -32,7 +32,7 @@ class RailRoad
     when 3
       add_route
       puts ""
-      # управлять станциями в нем (добавлять, удалять)
+      
       puts "Перейти в управление маршрутами?"
       puts "1 - Да"
       puts "2 - Нет"
@@ -60,9 +60,31 @@ class RailRoad
     when 7
       wagon_control('remove')
     when 8
-      puts "Отправить поезд на станцию..."
-      # Показать станция, которая впереди, которая сзади
-      # двигать только на одну стацию, не дальше
+      puts "Выберите станцию, на которой стоит поезд"
+      stations_list
+      station_index = gets.chomp.to_i - 1
+
+      puts "Выберите поезд, который хотите отправить"
+      trains_list_on_station(station_index)
+      train_index = gets.chomp.to_i - 1
+
+      puts "Выберите куда отправляем поезд"
+      puts "1 - На следующую станцию"
+      puts "2 - На предыдущую станцию"
+      direction = gets.chomp.to_i
+
+      train = self.stations[station_index].trains[train_index]
+      if direction == 1
+        train.current_station.remove_train(train_index)
+        train.next_station.add_train(train)
+        train.move_forward
+      else
+        train.current_station.remove_train(train_index)
+        train.previous_station.add_train(train)
+        train.move_backward
+      end
+
+      puts "Поезд N#{train.number} переместился на станцию #{train.current_station.name}"
     when 9
       puts "Посмотреть список поездов на станции..."
     when 0
@@ -115,7 +137,6 @@ class RailRoad
 
     route = Route.new(stations[start_station_index], stations[end_station_index])
     self.routes << route
-    @current_station_index = 0
   end
 
   def route_control
@@ -198,20 +219,23 @@ class RailRoad
   end
 
   def seed
-    stations_name = ["Moscow" , "Saint-Petersburg", "Rybinsk"]
-    trains = [[1231, 'cargo', 34], [123, 'passenger', 13], [2234, 'cargo', 52]]
+    stations_name = ["Moscow" , "Saint-Petersburg", "Rybinsk", "Tomsk"]
+    trains = [[1231, 'cargo', 34], [123, 'passenger', 13], [2234, 'cargo', 52], []]
 
     stations_name.each do |station, idx|
       self.stations << Station.new(station)
     end
 
     self.stations.each_with_index do |station, idx|
-      station.add_train(trains[idx][1] == 1 ? PassengerTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]) : CargoTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]))
+      unless trains[idx].size == 0
+        station.add_train(trains[idx][1] == 1 ? PassengerTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]) : CargoTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]))
+      end
     end
 
     route = Route.new(stations[0], stations[1])
+    route.add_station(stations[3])
     self.routes << route
-    @current_station_index = 0
+    self.stations[0].trains[0].set_route(route)
   end
 end
 
