@@ -47,9 +47,14 @@ class RailRoad
       routes_list
       route_index = gets.chomp.to_i - 1
       station = routes[route_index].start_station
-      puts "Первая станция в маршрте #{routes[route_index].start_station.name}"
+      puts "Первая станция в маршрте #{station.name}"
 
-      trains_list_on_station(route_index)
+      self.stations.each_with_index do |s, idx|
+        if s.name == station.name
+          trains_list_on_station(idx)
+        end
+      end
+
       puts "Выберите поезд, которому хотите назначить маршрут"
       train_index = gets.chomp.to_i - 1
 
@@ -86,15 +91,36 @@ class RailRoad
 
       puts "Поезд N#{train.number} переместился на станцию #{train.current_station.name}"
     when 9
-      puts "Посмотреть список поездов на станции..."
+      puts "Список поездов на станции"
+      trains_list_on_station
     when 0
       puts "Досвидания"
-    when 99
-      puts trains_list_on_station
     else
       puts "Такой команды не существует"
     end
   end
+
+  def seed
+    stations_name = ["Moscow" , "Saint-Petersburg", "Rybinsk", "Tomsk"]
+    trains = [[1231, 'cargo', 34], [123, 'passenger', 13], [2234, 'cargo', 52], []]
+
+    stations_name.each do |station, idx|
+      self.stations << Station.new(station)
+    end
+
+    self.stations.each_with_index do |station, idx|
+      unless trains[idx].size == 0
+        station.add_train(trains[idx][1] == 1 ? PassengerTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]) : CargoTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]))
+      end
+    end
+
+    route = Route.new(stations[0], stations[1])
+    route.add_station(stations[3])
+    self.routes << route
+    self.stations[0].trains[0].set_route(route)
+  end
+
+  private
 
   def add_station
     puts "Задайте название станции"
@@ -216,26 +242,6 @@ class RailRoad
     self.routes.each_with_index do |route, idx|
       puts "#{idx + 1} - #{route.start_station.name} - #{route.end_station.name}"
     end
-  end
-
-  def seed
-    stations_name = ["Moscow" , "Saint-Petersburg", "Rybinsk", "Tomsk"]
-    trains = [[1231, 'cargo', 34], [123, 'passenger', 13], [2234, 'cargo', 52], []]
-
-    stations_name.each do |station, idx|
-      self.stations << Station.new(station)
-    end
-
-    self.stations.each_with_index do |station, idx|
-      unless trains[idx].size == 0
-        station.add_train(trains[idx][1] == 1 ? PassengerTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]) : CargoTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]))
-      end
-    end
-
-    route = Route.new(stations[0], stations[1])
-    route.add_station(stations[3])
-    self.routes << route
-    self.stations[0].trains[0].set_route(route)
   end
 end
 
