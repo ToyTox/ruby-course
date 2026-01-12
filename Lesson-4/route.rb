@@ -14,6 +14,12 @@ class Route
   end
 
   def remove_station(station)
-    stations.delete(station)
+    if station == start_station
+      puts "Нельзя удалять начальную станцию"
+    elsif station == end_station
+      puts "Нельзя удалять конечную станцию"
+    else
+      stations.delete(station)
+    end
   end
 end

@@ -8,101 +8,104 @@ class RailRoad
   end
 
   def menu
-    puts "Список команд. Введите цифру согласно желаемому действию"
-    puts "1 - Создать станцию"
-    puts "2 - Создать поезд"
-    puts "3 - Создать маршрут"
-    puts "4 - Управлять маршрутом"
-    puts "5 - Назначить маршрут поезду"
-    puts "6 - Прицепить вагон к поезду"
-    puts "7 - Отцепить вагон от поезда"
-    puts "8 - Отправить поезд на станцию"
-    puts "9 - Посмотреть список поездов на станции"
-    puts "0 - Выход"
+    loop do
+      puts "Список команд. Введите цифру согласно желаемому действию"
+      puts "1 - Создать станцию"
+      puts "2 - Создать поезд"
+      puts "3 - Создать маршрут"
+      puts "4 - Управлять маршрутом"
+      puts "5 - Назначить маршрут поезду"
+      puts "6 - Прицепить вагон к поезду"
+      puts "7 - Отцепить вагон от поезда"
+      puts "8 - Отправить поезд на станцию"
+      puts "9 - Посмотреть список поездов на станции"
+      puts "0 - Выход"
 
-    answer = gets.chomp.to_i
-
-    case answer
-    when 1
-      add_station
-      puts ""
-    when 2
-      add_train
-      puts ""
-    when 3
-      add_route
-      puts ""
-      
-      puts "Перейти в управление маршрутами?"
-      puts "1 - Да"
-      puts "2 - Нет"
       answer = gets.chomp.to_i
+      break if answer == 0
 
-      route_control if answer == 1
-    when 4
-      route_control
-      puts ""
-    when 5
-      puts "Выберите маршрут"
-      routes_list
-      route_index = gets.chomp.to_i - 1
-      station = routes[route_index].start_station
-      puts "Первая станция в маршрте #{station.name}"
+      case answer
+      when 1
+        add_station
+        puts
+      when 2
+        add_train
+        puts
+      when 3
+        add_route
+        puts
+        
+        puts "Перейти в управление маршрутами?"
+        puts "1 - Да"
+        puts "2 - Нет"
+        answer = gets.chomp.to_i
 
-      self.stations.each_with_index do |s, idx|
-        if s.name == station.name
-          trains_list_on_station(idx)
+        route_control if answer == 1
+      when 4
+        route_control
+        puts
+      when 5
+        puts "Выберите маршрут"
+        routes_list
+        route_index = gets.chomp.to_i - 1
+        station = routes[route_index].start_station
+        puts "Первая станция в маршрте #{station.name}"
+
+        self.stations.each_with_index do |s, idx|
+          if s.name == station.name
+            trains_list_on_station(idx)
+          end
         end
-      end
 
-      puts "Выберите поезд, которому хотите назначить маршрут"
-      train_index = gets.chomp.to_i - 1
+        puts "Выберите поезд, которому хотите назначить маршрут"
+        train_index = gets.chomp.to_i - 1
 
-      station.trains[train_index].set_route(routes[route_index])
-      puts "Поезду N #{station.trains[train_index].number} присвоен маршрут #{routes[route_index].start_station.name} - #{routes[route_index].end_station.name}"
-    when 6
-      wagon_control('add')
-    when 7
-      wagon_control('remove')
-    when 8
-      puts "Выберите станцию, на которой стоит поезд"
-      stations_list
-      station_index = gets.chomp.to_i - 1
+        station.trains[train_index].set_route(routes[route_index])
+        puts "Поезду N #{station.trains[train_index].number} присвоен маршрут #{routes[route_index].start_station.name} - #{routes[route_index].end_station.name}"
+      when 6
+        wagon_control('add')
+      when 7
+        wagon_control('remove')
+      when 8
+        puts "Выберите станцию, на которой стоит поезд"
+        stations_list
+        station_index = gets.chomp.to_i - 1
 
-      puts "Выберите поезд, который хотите отправить"
-      trains_list_on_station(station_index)
-      train_index = gets.chomp.to_i - 1
+        puts "Выберите поезд, который хотите отправить"
+        trains_list_on_station(station_index)
+        train_index = gets.chomp.to_i - 1
 
-      puts "Выберите куда отправляем поезд"
-      puts "1 - На следующую станцию"
-      puts "2 - На предыдущую станцию"
-      direction = gets.chomp.to_i
+        puts "Выберите куда отправляем поезд"
+        puts "1 - На следующую станцию"
+        puts "2 - На предыдущую станцию"
+        direction = gets.chomp.to_i
 
-      train = self.stations[station_index].trains[train_index]
-      if direction == 1
-        train.current_station.remove_train(train_index)
-        train.next_station.add_train(train)
-        train.move_forward
+        train = self.stations[station_index].trains[train_index]
+        if direction == 1
+          train.current_station.remove_train(train_index)
+          train.next_station.add_train(train)
+          train.move_forward
+        else
+          train.current_station.remove_train(train_index)
+          train.previous_station.add_train(train)
+          train.move_backward
+        end
+
+        puts "Поезд N#{train.number} переместился на станцию #{train.current_station.name}"
+      when 9
+        puts "Список поездов на станции"
+        trains_list_on_station
+      when 0
+        puts "Досвидания"
       else
-        train.current_station.remove_train(train_index)
-        train.previous_station.add_train(train)
-        train.move_backward
+        puts "Такой команды не существует"
       end
-
-      puts "Поезд N#{train.number} переместился на станцию #{train.current_station.name}"
-    when 9
-      puts "Список поездов на станции"
-      trains_list_on_station
-    when 0
-      puts "Досвидания"
-    else
-      puts "Такой команды не существует"
     end
   end
 
   def seed
     stations_name = ["Moscow" , "Saint-Petersburg", "Rybinsk", "Tomsk"]
-    trains = [[1231, 'cargo', 34], [123, 'passenger', 13], [2234, 'cargo', 52], []]
+    trains = [[1231, 'cargo', 34], [123, 'passenger', 1], [2234, 'cargo', 52], []]
 
     stations_name.each do |station, idx|
       self.stations << Station.new(station)
@@ -110,7 +113,7 @@ class RailRoad
 
     self.stations.each_with_index do |station, idx|
       unless trains[idx].size == 0
-        station.add_train(trains[idx][1] == 1 ? PassengerTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]) : CargoTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]))
+        station.add_train(trains[idx][1] == 'passenger' ? PassengerTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]) : CargoTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]))
       end
     end
 
@@ -170,7 +173,7 @@ class RailRoad
     routes_list
     route_index = gets.chomp.to_i - 1
 
-    while true
+    loop do
       puts "Выберите действие с маршрутом"
       puts "1 - Добавить станцию в маршрут"
       puts "2 - Удалить станцию из маршрута"
@@ -192,7 +195,6 @@ class RailRoad
         "Такой команды не существует"
       end
     end
-    
   end
 
   def wagon_control(action)

@@ -12,6 +12,10 @@ class Wagon
   end
 
   def remove_wagon
-    self.wagon_count -= 1
+    if self.wagon_count > 0
+      self.wagon_count -= 1
+    else
+      puts "У состава больне нет вагонов"
+    end
   end
 end
