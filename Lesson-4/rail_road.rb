@@ -38,9 +38,16 @@ class RailRoad
         puts "Перейти в управление маршрутами?"
         puts "1 - Да"
         puts "2 - Нет"
+
         answer = gets.chomp.to_i
 
-        route_control if answer == 1
+        if answer == 1
+          route_control
+        elsif answer == 2
+          puts "Переход в главное меню"
+        else
+          puts "Такого варианта не существует"
+        end
       when 4
         route_control
         puts
