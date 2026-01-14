@@ -112,7 +112,7 @@ class RailRoad
 
   def seed
     stations_name = ["Moscow" , "Saint-Petersburg", "Rybinsk", "Tomsk"]
-    trains = [[1231, 'cargo', 34], [123, 'passenger', 1], [2234, 'cargo', 52], []]
+    trains = [[1231, 'cargo', 3], [123, 'passenger', 1], [2234, 'cargo', 5], []]
 
     stations_name.each do |station, idx|
       self.stations << Station.new(station)
@@ -120,7 +120,14 @@ class RailRoad
 
     self.stations.each_with_index do |station, idx|
       unless trains[idx].size == 0
-        station.add_train(trains[idx][1] == 'passenger' ? PassengerTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]) : CargoTrain.new(trains[idx][0], trains[idx][1], trains[idx][2]))
+        if trains[idx][1] == 'passenger'
+          train = PassengerTrain.new(trains[idx][0], trains[idx][1])
+          train.create_wagons(trains[idx][2], trains[idx][1])
+        else
+          train = CargoTrain.new(trains[idx][0], trains[idx][1])
+          train.create_wagons(trains[idx][2], trains[idx][1])
+        end
+        station.add_train(train)
       end
     end
 
@@ -156,8 +163,15 @@ class RailRoad
     
     puts "Задайте число вагонов у поезда поезда"
     wagon_count = gets.chomp.to_i
+
+    if train_type == 'passenger'
+      train = PassengerTrain.new(train_number, train_type)
+      train.create_wagons(wagon_count, train_type)
+    else
+      train = CargoTrain.new(train_number, train_type)
+      train.create_wagons(wagon_count, train_type)
+    end
     
-    train = train_type_index == 1 ? PassengerTrain.new(train_number, train_type, wagon_count) : CargoTrain.new(train_number, train_type, wagon_count)
     puts "Поезд номер #{train_number} создан"
     stations[station_index].add_train(train)
   end
@@ -214,8 +228,8 @@ class RailRoad
     train_index = gets.chomp.to_i - 1
     train = self.stations[station_index].trains[train_index]
 
-    action == 'add' ? train.wagons.add_wagon : train.wagons.remove_wagon
-    puts "В поезде N#{train.number} теперь #{train.wagons.wagon_count} вагон(а/ов)"
+    action == 'add' ? train.add_wagon : train.remove_wagon
+    puts "В поезде N#{train.number} теперь #{train.wagons.size} вагон(а/ов)"
   end
   
   # Helpers
@@ -242,7 +256,7 @@ class RailRoad
 
     puts "Список поездов на станции #{station.name}:"
     station.trains.each_with_index do |train, idx|
-      puts "#{idx + 1} - Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagons.wagon_count} вагон(а/ов)"
+      puts "#{idx + 1} - Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagons.size} вагон(а/ов)"
     end
   end
 

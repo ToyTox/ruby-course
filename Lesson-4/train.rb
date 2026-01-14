@@ -6,11 +6,11 @@ class Train
   attr_accessor :route
   attr_accessor :current_station_index
 
-  def initialize(number, type, wagon_count)
+  def initialize(number, type)
     @speed = 0
     @number = number
     @type = type
-    @wagons = Wagon.new(wagon_count, type)
+    @wagons = []
     @current_station_index = 0
   end
 
@@ -49,5 +49,28 @@ class Train
 
   def stations
     [previous_station, current_station, next_station]
+  end
+
+  def create_wagons(count, type)
+    if count.is_a?(Integer) && count > 0
+      i = 0
+      while i < count
+        self.wagons << Wagon.new(type)
+        i += 1
+      end
+    end
+  end
+
+  def add_wagon
+    self.wagons << Wagon.new(self.type)
+  end
+
+  def remove_wagon
+    if self.wagons.size > 0
+      self.wagons.pop
+    else
+      puts "У состава больне нет вагонов"
+      puts
+    end
   end
 end
