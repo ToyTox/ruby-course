@@ -88,14 +88,18 @@ class RailRoad
         direction = gets.chomp.to_i
 
         train = self.stations[station_index].trains[train_index]
-        if direction == 1
+        if direction == 1 && train.next_station
           train.current_station.remove_train(train_index)
           train.next_station.add_train(train)
           train.move_forward
-        else
+        elsif direction == 2 && train.previous_station
           train.current_station.remove_train(train_index)
           train.previous_station.add_train(train)
           train.move_backward
+        elsif direction == 1
+          puts "Поезд уже на конечной станции маршрута"
+        elsif direction == 2
+          puts "Поезд уже на первой станции маршрута"
         end
 
         puts "Поезд N#{train.number} переместился на станцию #{train.current_station.name}"

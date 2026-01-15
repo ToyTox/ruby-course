@@ -39,7 +39,6 @@ class Train
   end
 
   def move_forward
-    puts current_station
     self.current_station_index += 1 if next_station
   end
 
