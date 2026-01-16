@@ -197,27 +197,34 @@ class RailRoad
     puts "Выберите маршрут"
     routes_list
     route_index = gets.chomp.to_i - 1
-
-    loop do
-      puts "Выберите действие с маршрутом"
-      puts "1 - Добавить станцию в маршрут"
-      puts "2 - Удалить станцию из маршрута"
-      puts "0 - Маршрут готов"
-      route_control = gets.chomp.to_i
-      break if route_control == 0
-
-      puts "Выберите станцию"
-        stations_list
-        station_index = gets.chomp.to_i - 1
-      case route_control
-      when 1
-        routes[route_index].add_station(stations[station_index])
-        puts routes[route_index].inspect
-      when 2
-        routes[route_index].remove_station(stations[station_index])
-        puts routes[route_index].inspect
-      else
-        "Такой команды не существует"
+    route_variants = []
+    routes.each_with_index do |r, i|
+      route_variants << i + 1
+    end
+    if route_variants.include?(route_index)
+      puts "Такого маршрута не существует"
+    else
+      loop do
+        puts "Выберите действие с маршрутом"
+        puts "1 - Добавить станцию в маршрут"
+        puts "2 - Удалить станцию из маршрута"
+        puts "0 - Маршрут готов"
+        route_control = gets.chomp.to_i
+        break if route_control == 0
+  
+        puts "Выберите станцию"
+          stations_list
+          station_index = gets.chomp.to_i - 1
+        case route_control
+        when 1
+          routes[route_index].add_station(stations[station_index])
+          puts routes[route_index].inspect
+        when 2
+          routes[route_index].remove_station(stations[station_index])
+          puts routes[route_index].inspect
+        else
+          "Такой команды не существует"
+        end
       end
     end
   end
