@@ -60,8 +60,14 @@ class Train
     end
   end
 
-  def add_wagon
-    self.wagons << Wagon.new(self.type)
+  def add_wagon(wagon)
+    if wagon_type_matches?(wagon)
+      self.wagons << wagon
+      true
+    else
+      puts "Нельзя прицепить #{wagon.type} вагон к #{train.type} поезду"
+      false
+    end
   end
 
   def remove_wagon
@@ -71,5 +77,12 @@ class Train
       puts "У состава больне нет вагонов"
       puts
     end
+  end
+
+  private
+
+  def wagon_type_matches?(wagon)
+    (self.type == :cargo && wagon.type == :cargo) ||
+    (self.type == :passenger && wagon.type == :passenger)
   end
 end

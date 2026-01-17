@@ -239,7 +239,14 @@ class RailRoad
     train_index = gets.chomp.to_i - 1
     train = self.stations[station_index].trains[train_index]
 
-    action == 'add' ? train.add_wagon : train.remove_wagon
+    if action == 'add'
+      wagon = train.type == :passenger ? PassengerWagon.new
+       : CargoWagon.new
+      train.add_wagon(wagon)
+    else
+      train.remove_wagon
+    end
+    # action == 'add' ? train.add_wagon : train.remove_wagon
     puts "В поезде N#{train.number} теперь #{train.wagons.size} вагон(а/ов)"
   end
   
