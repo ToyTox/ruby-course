@@ -27,15 +27,19 @@ class Train
   end
 
   def next_station
-    self.route.stations[self.current_station_index + 1]
+    return nil unless route
+    route.stations[current_station_index + 1]
   end
 
   def previous_station
-    self.route.stations[self.current_station_index - 1] if self.current_station_index > 0
+    return nil unless route
+    return nil if current_station_index <= 0
+    route.stations[current_station_index - 1]
   end
 
   def current_station
-    self.route.stations[self.current_station_index]
+    return nil unless route
+    route.stations[current_station_index]
   end
 
   def move_forward
