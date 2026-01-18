@@ -58,7 +58,7 @@ class Train
     if count.is_a?(Integer) && count > 0
       i = 0
       while i < count
-        self.wagons << Wagon.new(type)
+        wagons << Wagon.new(type)
         i += 1
       end
     end
@@ -66,7 +66,7 @@ class Train
 
   def add_wagon(wagon)
     if wagon_type_matches?(wagon)
-      self.wagons << wagon
+      wagons << wagon
       true
     else
       puts "Нельзя прицепить #{wagon.type} вагон к #{train.type} поезду"
@@ -75,8 +75,8 @@ class Train
   end
 
   def remove_wagon
-    if self.wagons.size > 0
-      self.wagons.pop
+    if wagons.size > 0
+      wagons.pop
     else
       puts "У состава больне нет вагонов"
       puts
