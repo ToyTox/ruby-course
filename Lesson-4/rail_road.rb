@@ -2,6 +2,20 @@ class RailRoad
   attr_accessor :stations
   attr_accessor :routes
 
+  # Тип поездов
+  PASSENGER_TYPE = :passenger
+  CARGON_TYPE = :cargo
+
+  # Направление
+  DIRECTION_FORWARD = 1
+  DIRECTION_BACKWARD = 2
+
+  # Опции меню
+  MENU_CREATE_STATION = 1
+  MENU_CREATE_TRAIN = 2
+  MENU_EXIT = 0
+
+
   def initialize
     @stations = []
     @routes = []
@@ -89,17 +103,17 @@ class RailRoad
         direction = gets.chomp.to_i
 
         train = stations[station_index].trains[train_index]
-        if direction == 1 && train.next_station
+        if direction == DIRECTION_FORWARD && train.next_station
           train.current_station.remove_train(train)
           train.next_station.add_train(train)
           train.move_forward
-        elsif direction == 2 && train.previous_station
+        elsif direction == DIRECTION_BACKWARD && train.previous_station
           train.current_station.remove_train(train)
           train.previous_station.add_train(train)
           train.move_backward
-        elsif direction == 1
+        elsif direction == DIRECTION_FORWARD
           puts "Поезд уже на конечной станции маршрута"
-        elsif direction == 2
+        elsif direction == DIRECTION_BACKWARD
           puts "Поезд уже на первой станции маршрута"
         end
 
@@ -181,7 +195,7 @@ class RailRoad
     puts "1 - Пассажирский"
     puts "2 - Грузовой"
     train_type_index = gets.chomp.to_i
-    train_type = train_type_index == 1 ? 'passenger' : 'cargo'
+    train_type = train_type_index == 1 ? PASSENGER_TYPE : CARGO_TYPE
     
     puts "Задайте число вагонов у поезда поезда"
     wagon_count = gets.chomp.to_i
