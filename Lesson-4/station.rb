@@ -11,8 +11,8 @@ class Station
     trains << train
   end
 
-  def remove_train(train_index)
-    trains.delete_at(train_index)
+  def remove_train(train)
+    trains.delete(train)
   end
 
   def trains_by_types(type)

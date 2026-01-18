@@ -89,11 +89,11 @@ class RailRoad
 
         train = self.stations[station_index].trains[train_index]
         if direction == 1 && train.next_station
-          train.current_station.remove_train(train_index)
+          train.current_station.remove_train(train)
           train.next_station.add_train(train)
           train.move_forward
         elsif direction == 2 && train.previous_station
-          train.current_station.remove_train(train_index)
+          train.current_station.remove_train(train)
           train.previous_station.add_train(train)
           train.move_backward
         elsif direction == 1
@@ -143,6 +143,23 @@ class RailRoad
 
   private
 
+  def get_valid_index(collection, prompt)
+    loop do
+      puts prompt
+      puts "Введите номер от 1 до #{collection.size} (или 0 при отмене)"
+      index = gets.chomp
+  
+      return nil if index == 0 || index.empty?
+  
+      index = index.to_i - 1
+      if index >= 0 && index < collection.size
+        return index
+      else
+        puts "Такого действия не существует"
+      end
+    end
+  end
+
   def add_station
     puts "Задайте название станции"
     station_name = gets.chomp
@@ -153,8 +170,8 @@ class RailRoad
   
   def add_train
     puts "На какой станции формируется состав"
-    stations_list
-    station_index = gets.chomp.to_i - 1
+    station_index = get_valid_index(stations, "Выберите станцию")
+    return unless station_index
 
     puts "Задайте номер поезда"
     train_number = gets.chomp.to_i
@@ -201,7 +218,7 @@ class RailRoad
     routes.each_with_index do |r, i|
       route_variants << i + 1
     end
-    if route_variants.include?(route_index)
+    if route_index < 0 || route_index >= routes.size
       puts "Такого маршрута не существует"
     else
       loop do
