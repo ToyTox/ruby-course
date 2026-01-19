@@ -6,7 +6,7 @@ class Train
   attr_accessor :route
   attr_accessor :current_station_index
 
-  def initialize(number, type)
+  def initialize(number)
     @speed = 0
     @number = number
     @type = type

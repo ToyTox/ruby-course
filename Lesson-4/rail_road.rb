@@ -131,23 +131,23 @@ class RailRoad
 
   def seed
     stations_name = ["Moscow" , "Saint-Petersburg", "Rybinsk", "Tomsk"]
-    trains = [[1231, 'cargo', 3], [123, 'passenger', 1], [2234, 'cargo', 5], []]
+    trains = [[1231, :cargo, 3], [123, :passenger, 1], [2234, :cargo, 5], []]
 
     stations_name.each do |station, idx|
       stations << Station.new(station)
     end
 
     stations.each_with_index do |station, idx|
-      # unless trains[idx].size == 0
-      #   if trains[idx][1] == 'passenger'
-      #     train = PassengerTrain.new(trains[idx][0], trains[idx][1])
-      #     train.create_wagons(trains[idx][2], trains[idx][1])
-      #   else
-      #     train = CargoTrain.new(trains[idx][0], trains[idx][1])
-      #     train.create_wagons(trains[idx][2], trains[idx][1])
-      #   end
-      #   station.add_train(train)
-      # end
+      unless trains[idx].size == 0
+        if trains[idx][1] == PASSENGER_TYPE
+          train = PassengerTrain.new(trains[idx][0])
+          train.create_wagons(trains[idx][2], trains[idx][1])
+        else
+          train = CargoTrain.new(trains[idx][0])
+          train.create_wagons(trains[idx][2], trains[idx][1])
+        end
+        station.add_train(train)
+      end
     end
 
     route = Route.new(stations[0], stations[1])
@@ -200,11 +200,11 @@ class RailRoad
     puts "Задайте число вагонов у поезда поезда"
     wagon_count = gets.chomp.to_i
 
-    if train_type == 'passenger'
-      train = PassengerTrain.new(train_number, train_type)
+    if train_type == PASSENGER_TYPE
+      train = PassengerTrain.new(train_number)
       train.create_wagons(wagon_count, train_type)
     else
-      train = CargoTrain.new(train_number, train_type)
+      train = CargoTrain.new(train_number)
       train.create_wagons(wagon_count, train_type)
     end
     
