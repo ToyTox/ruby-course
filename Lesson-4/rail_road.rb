@@ -67,9 +67,6 @@ class RailRoad
         puts
       when 5
         route_index = select_from_list(routes, 'маршрут', :routes_list)
-        # puts "Выберите маршрут"
-        # routes_list
-        # route_index = gets.chomp.to_i - 1
         station = routes[route_index].start_station
         puts "Первая станция в маршрте #{station.name}"
 
@@ -89,9 +86,7 @@ class RailRoad
       when 7
         wagon_control('remove')
       when 8
-        puts "Выберите станцию, на которой стоит поезд"
-        stations_list
-        station_index = gets.chomp.to_i - 1
+        station_index = select_from_list(stations, 'станцию', :stations_list)
 
         puts "Выберите поезд, который хотите отправить"
         trains_list_on_station(station_index)
@@ -184,7 +179,6 @@ class RailRoad
   end
   
   def add_train
-    # puts "На какой станции формируется состав"
     station_index = get_valid_index(stations, "Выберите станцию")
     return unless station_index
 
@@ -226,13 +220,8 @@ class RailRoad
   end
 
   def route_control
-    puts "Выберите маршрут"
-    routes_list
-    route_index = gets.chomp.to_i - 1
-    route_variants = []
-    routes.each_with_index do |r, i|
-      route_variants << i + 1
-    end
+    route_index = select_from_list(routes, 'маршрут', :routes_list)
+
     if route_index < 0 || route_index >= routes.size
       puts "Такого маршрута не существует"
     else
@@ -244,9 +233,8 @@ class RailRoad
         route_control = gets.chomp.to_i
         break if route_control == 0
   
-        puts "Выберите станцию"
-          stations_list
-          station_index = gets.chomp.to_i - 1
+        station_index = select_from_list(stations, 'станцию', :stations_list)
+
         case route_control
         when 1
           routes[route_index].add_station(stations[station_index])
@@ -262,9 +250,7 @@ class RailRoad
   end
 
   def wagon_control(action)
-    puts "Выберите станцию на которой стоит поезд"
-    stations_list
-    station_index = gets.chomp.to_i - 1
+    station_index = select_from_list(stations, 'станцию на которой стоит поезд', :stations_list)
 
     puts "Выберите поезд к которому хотите прицепить вагон"
     trains_list_on_station(station_index)
@@ -272,13 +258,11 @@ class RailRoad
     train = stations[station_index].trains[train_index]
 
     if action == 'add'
-      wagon = train.type == :passenger ? PassengerWagon.new
-       : CargoWagon.new
+      wagon = train.type == :passenger ? PassengerWagon.new : CargoWagon.new
       train.add_wagon(wagon)
     else
       train.remove_wagon
     end
-    # action == 'add' ? train.add_wagon : train.remove_wagon
     puts "В поезде N#{train.number} теперь #{train.wagons.size} вагон(а/ов)"
   end
   
@@ -306,9 +290,7 @@ class RailRoad
   
   def trains_list_on_station(station_index = nil)
     unless station_index
-      puts "Выберите станцию:"
-      stations_list
-      station_index = gets.chomp.to_i - 1
+      station_index = select_from_list(stations, 'ствнцию', :stations_list)
     end
 
     station = find_station(station_index)
