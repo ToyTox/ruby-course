@@ -35,10 +35,9 @@ class RailRoad
       puts "9 - Посмотреть список поездов на станции"
       puts "0 - Выход"
 
-      answer = gets.chomp.to_i
-      break if answer == 0
+      user_choise = gets.chomp.to_i
 
-      case answer
+      case user_choise
       when 1
         add_station
         puts
@@ -68,7 +67,7 @@ class RailRoad
       when 5
         route_index = select_from_list(routes, 'маршрут', :routes_list)
         station = routes[route_index].start_station
-        puts "Первая станция в маршрте #{station.name}"
+        puts "Первая станция в маршруте #{station.name}"
 
         stations.each_with_index do |s, idx|
           if s.name == station.name
@@ -118,6 +117,7 @@ class RailRoad
         trains_list_on_station
       when 0
         puts "Досвидания"
+        break
       else
         puts "Такой команды не существует"
       end
@@ -151,6 +151,10 @@ class RailRoad
     # stations[0].trains[0].set_route(route)
   end
 
+  # Методы ниже помечены как private, потому что: 
+  # - Они являются вспомогательными для публичного метода menu()
+  # - Используются только внутри класса RailRoad
+  # - Не должны вызываться напрямую пользователем для поддержания инкапсуляции
   private
 
   def get_valid_index(collection, prompt)
@@ -302,7 +306,7 @@ class RailRoad
   end
 
   def routes_list
-    puts "Список маргрутов:"
+    puts "Список маршрутов:"
     routes.each_with_index do |route, idx|
       puts "#{idx + 1} - #{route.start_station.name} - #{route.end_station.name}"
     end

@@ -9,6 +9,6 @@ require_relative 'route'
 require_relative 'station'
 require_relative 'rail_road'
 
-@rr = RailRoad.new
-@rr.seed
-@rr.menu
+@railway_system = RailRoad.new
+@railway_system.seed
+@railway_system.menu

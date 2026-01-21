@@ -78,7 +78,7 @@ class Train
     if wagons.size > 0
       wagons.pop
     else
-      puts "У состава больне нет вагонов"
+      puts "У состава больше нет вагонов"
       puts
     end
   end
