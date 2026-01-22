@@ -55,12 +55,11 @@ class Train
   end
 
   def create_wagons(count, type)
-    if count.is_a?(Integer) && count > 0
-      i = 0
-      while i < count
-        wagons << Wagon.new(type)
-        i += 1
-      end
+    return unless count.is_a?(Integer) && count.positive?
+
+    count.time do
+      wagon = type == :passenger ? PassengerWagon.new : CargoWagon.new
+      wagons << wagon
     end
   end
 
