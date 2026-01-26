@@ -7,6 +7,10 @@ class Station
     @trains = []
   end
 
+  def all
+    puts @stations
+  end
+
   def add_train(train)
     trains << train
   end

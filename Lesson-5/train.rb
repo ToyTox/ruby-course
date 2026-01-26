@@ -1,4 +1,6 @@
 class Train
+  include CompanyName
+
   attr_accessor :speed
   attr_reader :number
   attr_reader :type
@@ -9,9 +11,15 @@ class Train
   def initialize(number)
     @speed = 0
     @number = number
+    @name = nil
     @type = type
     @wagons = []
     @current_station_index = 0
+    @@trains = {}
+  end
+
+  def find(number)
+    self.find(number)
   end
 
   def speed_up
