@@ -8,6 +8,12 @@ class Train
   attr_accessor :route
   attr_accessor :current_station_index
 
+  @@trains = {}
+
+  def self.find(number)
+    @@trains[number]
+  end
+
   def initialize(number)
     @speed = 0
     @number = number
@@ -15,11 +21,6 @@ class Train
     @type = type
     @wagons = []
     @current_station_index = 0
-    @@trains = {}
-  end
-
-  def find(number)
-    self.find(number)
   end
 
   def speed_up
