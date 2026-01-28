@@ -2,13 +2,16 @@ class Station
   attr_accessor :trains
   attr_reader :name
 
+  @@stations = []
+
+  def self.all
+    @@stations.each { |station| puts station.name }
+  end
+
   def initialize(name)
     @name = name
     @trains = []
-  end
-
-  def all
-    puts @stations
+    @@stations << self
   end
 
   def add_train(train)
