@@ -1,5 +1,6 @@
 class Train
   include CompanyName
+  include InstanceCounter
 
   attr_accessor :speed
   attr_reader :number
@@ -21,6 +22,7 @@ class Train
     @type = type
     @wagons = []
     @current_station_index = 0
+    self.class.instance
   end
 
   def speed_up
