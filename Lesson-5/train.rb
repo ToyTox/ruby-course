@@ -22,7 +22,7 @@ class Train
     @type = type
     @wagons = []
     @current_station_index = 0
-    self.class.instance
+    instance
   end
 
   def speed_up

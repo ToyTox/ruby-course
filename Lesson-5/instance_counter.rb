@@ -2,12 +2,13 @@ module InstanceCounter
   @@instance = 0
   @@register_instance = 0
 
-  def self.instance
+  def instance
     @@instance += 1
+    puts @@instance
   end
 
   protected
-  def self.register_instance
+  def register_instance
     @@register_instance += 1
   end
 end
