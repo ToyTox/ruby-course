@@ -1,4 +1,6 @@
 class Route
+  include InstanceCounter
+
   class RouteError < StandardError; end
 
   attr_reader :start_station
@@ -11,6 +13,7 @@ class Route
     @start_station = start_station
     @end_station = end_station
     @stations = [start_station, end_station]
+    register_instance
   end
 
   def add_station(station)
