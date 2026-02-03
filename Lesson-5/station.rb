@@ -7,7 +7,7 @@ class Station
   @@stations = []
 
   def self.all
-    @@stations.each { |station| puts station.name }
+    @@stations
   end
 
   def initialize(name)

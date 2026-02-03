@@ -19,10 +19,10 @@ class Train
     @speed = 0
     @number = number
     @name = nil
-    @type = type
     @wagons = []
     @current_station_index = 0
     @@trains[number] = self
+    register_instance
   end
 
   def speed_up
@@ -79,7 +79,7 @@ class Train
       wagons << wagon
       true
     else
-      puts "Нельзя прицепить #{wagon.type} вагон к #{train.type} поезду"
+      puts "Нельзя прицепить #{wagon.type} вагон к #{self.type} поезду"
       false
     end
   end

@@ -161,11 +161,11 @@ class RailRoad
     loop do
       puts prompt
       puts "Введите номер от 1 до #{collection.size} (или 0 при отмене)"
-      index = gets.chomp
+      index = gets.chomp.to_i
   
-      return nil if index == 0 || index.empty?
+      return nil if index == 0
   
-      index = index.to_i - 1
+      index -= 1
       if index >= 0 && index < collection.size
         return index
       else
