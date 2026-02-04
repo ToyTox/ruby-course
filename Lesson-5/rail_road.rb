@@ -35,9 +35,9 @@ class RailRoad
       puts "9 - Посмотреть список поездов на станции"
       puts "0 - Выход"
 
-      user_choise = gets.chomp.to_i
+      user_choice = gets.chomp.to_i
 
-      case user_choise
+      case user_choice
       when 1
         add_station
         puts
