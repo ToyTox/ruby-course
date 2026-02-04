@@ -28,8 +28,4 @@ class Station
   def trains_by_types(type)
     trains.select { |train| train.type == type }.count
   end
-
-  def go_train(train)
-    trains.delete(train)
-  end
 end
