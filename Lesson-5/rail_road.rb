@@ -4,7 +4,7 @@ class RailRoad
 
   # Тип поездов
   PASSENGER_TYPE = :passenger
-  CARGON_TYPE = :cargo
+  CARGO_TYPE = :cargo
 
   # Направление
   DIRECTION_FORWARD = 1
@@ -294,7 +294,7 @@ class RailRoad
   
   def trains_list_on_station(station_index = nil)
     unless station_index
-      station_index = select_from_list(stations, 'ствнцию', :stations_list)
+      station_index = select_from_list(stations, 'станцию', :stations_list)
     end
 
     station = find_station(station_index)
