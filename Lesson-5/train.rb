@@ -18,7 +18,6 @@ class Train
   def initialize(number)
     @speed = 0
     @number = number
-    @name = nil
     @wagons = []
     @current_station_index = 0
     @@trains[number] = self

@@ -5,6 +5,5 @@ class Wagon
 
   def initialize(type)
     @type = type
-    @name = nil
   end
 end
