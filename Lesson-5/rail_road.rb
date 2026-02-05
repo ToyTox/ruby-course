@@ -125,30 +125,9 @@ class RailRoad
   end
 
   def seed
-    stations_name = ["Moscow" , "Saint-Petersburg", "Rybinsk", "Tomsk"]
-    trains = [[1231, :cargo, 3], [123, :passenger, 1], [2234, :cargo, 5], []]
-
-    stations_name.each do |station, idx|
-      stations << Station.new(station)
-    end
-
-    stations.each_with_index do |station, idx|
-      unless trains[idx].size == 0
-        if trains[idx][1] == PASSENGER_TYPE
-          train = PassengerTrain.new(trains[idx][0])
-          train.create_wagons(trains[idx][2], trains[idx][1])
-        else
-          train = CargoTrain.new(trains[idx][0])
-          train.create_wagons(trains[idx][2], trains[idx][1])
-        end
-        station.add_train(train)
-      end
-    end
-
-    route = Route.new(stations[0], stations[1])
-    route.add_station(stations[3])
-    routes << route
-    # stations[0].trains[0].set_route(route)
+    seed_stations
+    seed_trains
+    seed_routes
   end
 
   # Методы ниже помечены как private, потому что: 
@@ -156,6 +135,31 @@ class RailRoad
   # - Используются только внутри класса RailRoad
   # - Не должны вызываться напрямую пользователем для поддержания инкапсуляции
   private
+
+  def seed_stations
+    %w[Moskow Saint-Petersburg Rybinsk Tomsk].each do |station|
+      stations << Station.new(station)
+    end
+  end
+
+  def seed_trains
+    train_data = [
+      {number: 1231, type: :cargo, wagons_count: 3, station_idx: 0},
+      {number: 123, type: :passenger, wagons_count: 1, station_idx: 1},
+      {number: 2234, type: :cargo, wagons_count: 5, station_idx: 2}
+    ]
+
+    train_data.each do |data|
+      train = create_train(data[:number], data[:type], data[:wagons_count])
+      stations[data[:station_idx]].add_train(train)
+    end
+  end
+
+  def seed_routes
+    route = Route.new(stations[0], stations[1])
+    route.add_station(stations[3])
+    routes << route
+  end
 
   def get_valid_index(collection, prompt)
     loop do
@@ -208,6 +212,13 @@ class RailRoad
     
     puts "Поезд номер #{train_number} создан"
     stations[station_index].add_train(train)
+  end
+
+  def create_train(number, type, wagons_count)
+    train_class = type == PASSENGER_TYPE ? PassengerTrain : CargoTrain
+    train = train_class.new(number)
+    train.create_wagons(wagons_count, type)
+    train
   end
 
   def add_route
