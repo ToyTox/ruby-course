@@ -187,7 +187,7 @@ class RailRoad
   end
   
   def add_train
-    station_index = get_valid_index(stations, "Выберите станцию")
+    station_index = select_from_list(stations, "станцию", :stations_list)
     return unless station_index
 
     puts "Задайте номер поезда"
@@ -202,14 +202,8 @@ class RailRoad
     puts "Задайте число вагонов у поезда поезда"
     wagon_count = gets.chomp.to_i
 
-    if train_type == PASSENGER_TYPE
-      train = PassengerTrain.new(train_number)
-      train.create_wagons(wagon_count, train_type)
-    else
-      train = CargoTrain.new(train_number)
-      train.create_wagons(wagon_count, train_type)
-    end
-    
+    train = create_train(train_number, train_type, wagon_count)
+
     puts "Поезд номер #{train_number} создан"
     stations[station_index].add_train(train)
   end
