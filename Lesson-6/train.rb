@@ -1,6 +1,7 @@
 class Train
   include CompanyName
   include InstanceCounter
+  include Validator
 
   attr_accessor :speed
   attr_reader :number
@@ -90,6 +91,12 @@ class Train
       puts "У состава больше нет вагонов"
       puts
     end
+  end
+
+  protected
+
+  def validate!
+    # TODO create validate
   end
 
   private
