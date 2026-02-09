@@ -23,6 +23,7 @@ class Train
     @current_station_index = 0
     @@trains[number] = self
     register_instance
+    validate!
   end
 
   def speed_up
@@ -96,7 +97,8 @@ class Train
   protected
 
   def validate!
-    # TODO create validate
+    raise "Номер не может быть nil или пустым" if number.nil? || number.zero?
+    raise "Номер не может быть nil или пустым" if type.nil? || number.empty?
   end
 
   private
