@@ -268,9 +268,17 @@ class RailRoad
 
     if action == 'add'
       wagon = train.type == :passenger ? PassengerWagon.new : CargoWagon.new
-      train.add_wagon(wagon)
+      if train.wagon_type_matches?(wagon)
+        train.add_wagon(wagon)
+      else
+        puts "Нельзя прицепить #{wagon.type} вагон к #{train.type} поезду"
+      end
     else
-      train.remove_wagon
+      if train.wagons.size > 0
+        train.remove_wagon
+      else
+        puts "У состава больше нет вагонов"
+      end
     end
     puts "В поезде N#{train.number} теперь #{train.wagons.size} вагон(а/ов)"
   end

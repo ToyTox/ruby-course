@@ -76,35 +76,21 @@ class Train
   end
 
   def add_wagon(wagon)
-    if wagon_type_matches?(wagon)
-      wagons << wagon
-      true
-    else
-      puts "Нельзя прицепить #{wagon.type} вагон к #{self.type} поезду"
-      false
-    end
+    wagons << wagon
   end
 
   def remove_wagon
-    if wagons.size > 0
-      wagons.pop
-    else
-      puts "У состава больше нет вагонов"
-      puts
-    end
+    wagons.pop if wagons.size > 0
+  end
+
+  def wagon_type_matches?(wagon)
+    (self.type == :cargo && wagon.type == :cargo) ||
+    (self.type == :passenger && wagon.type == :passenger)
   end
 
   protected
 
   def validate!
     raise "Номер не может быть nil или пустым" if number.nil? || number.zero?
-    raise "Номер не может быть nil или пустым" if type.nil? || number.empty?
-  end
-
-  private
-
-  def wagon_type_matches?(wagon)
-    (self.type == :cargo && wagon.type == :cargo) ||
-    (self.type == :passenger && wagon.type == :passenger)
   end
 end

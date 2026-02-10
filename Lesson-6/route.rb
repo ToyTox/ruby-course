@@ -23,14 +23,6 @@ class Route
     stations.insert(-2, station)
   end
 
-  private
-  
-  def validate_stations!(start_station, end_station)
-    raise RouteError "Начальная станция не может быть nil" unless start_station
-    raise RouteError "Конечная станция не может быть nil" unless end_station
-    raise RouteError "Начальная и конечная станция должны отличаться" if start_station == end_station
-  end
-
   def remove_station(station)
     if station == start_station
       puts "Нельзя удалять начальную станцию"
@@ -39,5 +31,13 @@ class Route
     else
       stations.delete(station)
     end
+  end
+
+  private
+  
+  def validate_stations!(start_station, end_station)
+    raise RouteError "Начальная станция не может быть nil" unless start_station
+    raise RouteError "Конечная станция не может быть nil" unless end_station
+    raise RouteError "Начальная и конечная станция должны отличаться" if start_station == end_station
   end
 end
