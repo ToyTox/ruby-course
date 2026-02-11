@@ -242,14 +242,15 @@ class RailRoad
         route_control = gets.chomp.to_i
         break if route_control == 0
   
-        station_index = select_from_list(stations, 'станцию', :stations_list)
+        station_index_for_add = select_from_list(stations, 'станцию', :stations_list)
+        station_index_for_remove = select_from_list(routes[route_index].stations, 'станцию', :stations_list_for_remove)
 
         case route_control
         when 1
-          routes[route_index].add_station(stations[station_index])
+          routes[route_index].add_station(stations[station_index_for_add])
           puts routes[route_index].inspect
         when 2
-          routes[route_index].remove_station(stations[station_index])
+          routes[route_index].remove_station(stations[station_index_for_remove])
           puts routes[route_index].inspect
         else
           "Такой команды не существует"
