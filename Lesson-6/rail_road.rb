@@ -242,15 +242,21 @@ class RailRoad
         route_control = gets.chomp.to_i
         break if route_control == 0
   
-        station_index_for_add = select_from_list(stations, 'станцию', :stations_list)
-        station_index_for_remove = select_from_list(routes[route_index].stations, 'станцию', :stations_list_for_remove)
-
         case route_control
         when 1
+          station_index_for_add = select_from_list(stations, 'станцию', :stations_list)
           routes[route_index].add_station(stations[station_index_for_add])
           puts routes[route_index].inspect
         when 2
-          routes[route_index].remove_station(stations[station_index_for_remove])
+          route_stations_list(routes[route_index])
+          station_index_for_remove = select_from_list(routes[route_index].stations, 'станцию', nil)
+          if routes[route_index].stations[station_index_for_remove] == routes[route_index].start_station
+            puts "Нельзя удалять начальную станцию"
+          elsif routes[route_index].stations[station_index_for_remove] == routes[route_index].end_station
+            puts "Нельзя удалять конечную станцию"
+          else
+            routes[route_index].remove_station(stations[station_index_for_remove])
+          end
           puts routes[route_index].inspect
         else
           "Такой команды не существует"
@@ -298,6 +304,13 @@ class RailRoad
   def stations_list
     puts "Список станций:"
     stations.each_with_index do |station, idx|
+      puts "#{idx + 1} - #{station.name}"
+    end
+  end
+  
+  def route_stations_list(route)
+    puts "Список станций:"
+    route.stations.each_with_index do |station, idx|
       puts "#{idx + 1} - #{station.name}"
     end
   end
