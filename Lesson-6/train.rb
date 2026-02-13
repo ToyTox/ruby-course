@@ -10,6 +10,8 @@ class Train
   attr_accessor :route
   attr_accessor :current_station_index
 
+  REGEXP_TRAIN_NUMBER = /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/i
+
   @@trains = {}
 
   def self.find(number)
@@ -92,5 +94,6 @@ class Train
 
   def validate!
     raise "Номер не может быть nil или пустым" if number.nil? || number.zero?
+    raise "Не корректный номер поезда" if number !~ REGEXP_TRAIN_NUMBER
   end
 end
