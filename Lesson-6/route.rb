@@ -1,5 +1,6 @@
 class Route
   include InstanceCounter
+  include Validator
 
   class RouteError < StandardError; end
 
@@ -14,6 +15,7 @@ class Route
     @end_station = end_station
     @stations = [start_station, end_station]
     register_instance
+    validate!
   end
 
   def add_station(station)
