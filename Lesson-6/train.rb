@@ -26,6 +26,7 @@ class Train
     @@trains[number] = self
     register_instance
     validate!
+    valid?
   end
 
   def speed_up
@@ -90,10 +91,8 @@ class Train
     (self.type == :passenger && wagon.type == :passenger)
   end
 
-  protected
-
   def validate!
-    raise "Номер не может быть nil или пустым" if number.nil? || number.zero?
-    raise "Не корректный номер поезда" if number !~ REGEXP_TRAIN_NUMBER
+    raise "Номер не может быть nil или пустым" if number.nil?
+    raise "Не корректный номер поезда - #{number}" if number !~ REGEXP_TRAIN_NUMBER
   end
 end

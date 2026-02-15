@@ -7,6 +7,7 @@ class Wagon
   def initialize(type)
     @type = type
     validate!
+    valid?
   end
 
   protected

@@ -144,9 +144,9 @@ class RailRoad
 
   def seed_trains
     train_data = [
-      {number: 1231, type: :cargo, wagons_count: 3, station_idx: 0},
-      {number: 123, type: :passenger, wagons_count: 1, station_idx: 1},
-      {number: 2234, type: :cargo, wagons_count: 5, station_idx: 2}
+      {number: 'a12-31', type: :cargo, wagons_count: 3, station_idx: 0},
+      {number: 'ab123', type: :passenger, wagons_count: 1, station_idx: 1},
+      {number: '12234', type: :cargo, wagons_count: 5, station_idx: 2}
     ]
 
     train_data.each do |data|
@@ -190,8 +190,14 @@ class RailRoad
     station_index = select_from_list(stations, "станцию", :stations_list)
     return unless station_index
 
-    puts "Задайте номер поезда"
-    train_number = gets.chomp.to_i
+    begin
+      puts "Задайте номер поезда"
+      train_number = gets.chomp.to_s
+      train = Train.new(train_number).validate!
+    rescue RuntimeError => e
+      puts "Ошибка #{e.message}"
+      retry unless train
+    end
 
     puts "Выберите тип поезда:"
     puts "1 - Пассажирский"

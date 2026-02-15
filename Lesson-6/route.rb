@@ -15,7 +15,7 @@ class Route
     @end_station = end_station
     @stations = [start_station, end_station]
     register_instance
-    validate!
+    valid?
   end
 
   def add_station(station)

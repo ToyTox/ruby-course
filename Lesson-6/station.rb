@@ -17,6 +17,7 @@ class Station
     @@stations << self
     register_instance
     validate!
+    valid?
   end
 
   def add_train(train)
@@ -29,5 +30,9 @@ class Station
 
   def trains_by_types(type)
     trains.select { |train| train.type == type }.count
+  end
+
+  def validate!
+    raise "Имя станции не может быть пустым или nil" if name.nil? || name.empty?
   end
 end
