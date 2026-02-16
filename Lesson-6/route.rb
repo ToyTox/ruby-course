@@ -19,8 +19,8 @@ class Route
   end
 
   def add_station(station)
-    raise RouteError "Станция не может быть nil" unless station
-    raise RouteError "Станция уже в маршруте" if stations.include?(station)
+    raise RouteError, "Станция не может быть nil" unless station
+    raise RouteError, "Станция уже в маршруте" if stations.include?(station)
 
     stations.insert(-2, station)
   end
@@ -32,8 +32,8 @@ class Route
   private
   
   def validate_stations!(start_station, end_station)
-    raise RouteError "Начальная станция не может быть nil" unless start_station
-    raise RouteError "Конечная станция не может быть nil" unless end_station
-    raise RouteError "Начальная и конечная станция должны отличаться" if start_station == end_station
+    raise RouteError, "Начальная станция не может быть nil" unless start_station
+    raise RouteError, "Конечная станция не может быть nil" unless end_station
+    raise RouteError, "Начальная и конечная станция должны отличаться" if start_station == end_station
   end
 end
