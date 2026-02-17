@@ -190,14 +190,7 @@ class RailRoad
     station_index = select_from_list(stations, "станцию", :stations_list)
     return unless station_index
 
-    begin
-      puts "Задайте номер поезда"
-      train_number = gets.chomp.to_s
-      train = Train.new(train_number).validate!
-    rescue RuntimeError => e
-      puts "Ошибка #{e.message}"
-      retry unless train
-    end
+    train_number = get_valid_train_number
 
     puts "Выберите тип поезда:"
     puts "1 - Пассажирский"
@@ -212,6 +205,19 @@ class RailRoad
 
     puts "Поезд номер #{train_number} создан"
     stations[station_index].add_train(train)
+  end
+
+  def get_valid_train_number
+    begin
+      puts "Задайте номер поезда формата ХХХ-ХХ или ХХХХХ"
+      number = gets.chomp
+      raise "Номер не может быть пустым" if number.empty?
+      raise "Некорректный формат номера #{number}" unless number.match?(Train::REGEXP_TRAIN_NUMBER)
+      return number
+    rescue RuntimeError => e
+      puts "Ошибка #{e.message}. Попробуйте снова"
+      retry unless train
+    end
   end
 
   def create_train(number, type, wagons_count)
