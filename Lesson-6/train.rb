@@ -19,13 +19,13 @@ class Train
   end
 
   def initialize(number)
-    @speed = 0
     @number = number
+    validate!
+    @speed = 0
     @wagons = []
     @current_station_index = 0
     @@trains[number] = self
     register_instance
-    validate!
     valid?
   end
 
