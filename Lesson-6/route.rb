@@ -9,7 +9,7 @@ class Route
   attr_accessor :stations
   
   def initialize(start_station, end_station)
-    validate_stations!(start_station, end_station)
+    validate!(start_station, end_station)
 
     @start_station = start_station
     @end_station = end_station
@@ -31,7 +31,7 @@ class Route
 
   private
   
-  def validate_stations!(start_station, end_station)
+  def validate!(start_station, end_station)
     raise RouteError, "Начальная станция не может быть nil" unless start_station
     raise RouteError, "Конечная станция не может быть nil" unless end_station
     raise RouteError, "Начальная и конечная станция должны отличаться" if start_station == end_station
