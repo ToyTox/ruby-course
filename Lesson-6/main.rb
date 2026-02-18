@@ -1,4 +1,3 @@
-require 'minitest/autorun'
 require_relative 'company_name'
 require_relative 'instance_counter'
 require_relative 'validator'
