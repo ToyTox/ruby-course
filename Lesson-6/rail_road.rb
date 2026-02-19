@@ -216,7 +216,7 @@ class RailRoad
       return number
     rescue RuntimeError => e
       puts "Ошибка #{e.message}. Попробуйте снова"
-      retry unless train
+      retry if number
     end
   end
 
