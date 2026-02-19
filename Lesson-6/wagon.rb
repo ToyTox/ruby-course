@@ -13,8 +13,8 @@ class Wagon
   protected
 
   def validate!
-    raise "Имя не может быть nil" if type.nil?
-    raise "Имя не может быть пустым" if type.empty?
+    raise "Тип вагона не может быть nil" if type.nil?
+    raise "Тип вагона должен быть :passanger или :cargo" unless %i[passenger cargo].include?(type)
     true
   end
 end
