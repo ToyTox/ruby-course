@@ -2,6 +2,8 @@ class Station
   include InstanceCounter
   include Validator
 
+  MIN_NAME_LENGTH = 2
+
   attr_accessor :trains
   attr_reader :name
 
@@ -33,6 +35,8 @@ class Station
   end
 
   def validate!
-    raise "Имя станции не может быть пустым или nil" if name.nil? || name.empty?
+    raise "Имя станции не может быть nil" if name.nil?
+    raise "Имя станции не может быть пустым" if name.strip.empty?
+    raise "Имя не может быть короче 2 симыолов" if name.strip.length < MIN_NAME_LENGTH
   end
 end
