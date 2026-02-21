@@ -6,9 +6,8 @@ class Train
   attr_accessor :speed
   attr_reader :number
   attr_reader :type
-  attr_accessor :wagons
-  attr_accessor :route
-  attr_accessor :current_station_index
+  attr_reader :wagons
+  attr_reader :route
 
   REGEXP_TRAIN_NUMBER = /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/i
 
@@ -37,7 +36,8 @@ class Train
   end
 
   def set_route(route)
-    self.route = route
+    @route = route
+    @current_station_index = 0
   end
 
   def next_station
@@ -94,4 +94,7 @@ class Train
     raise "Номер не может быть nil или пустым" if number.nil?
     raise "Не корректный номер поезда - #{number}" if number !~ REGEXP_TRAIN_NUMBER
   end
+
+  protected
+  attr_writer :current_station_index
 end

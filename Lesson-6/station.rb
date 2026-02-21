@@ -4,7 +4,7 @@ class Station
 
   MIN_NAME_LENGTH = 2
 
-  attr_accessor :trains
+  attr_reader :trains
   attr_reader :name
 
   @@stations = []
