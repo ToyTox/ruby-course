@@ -198,7 +198,7 @@ class RailRoad
     train_type_index = gets.chomp.to_i
     train_type = train_type_index == 1 ? PASSENGER_TYPE : CARGO_TYPE
     
-    puts "Задайте число вагонов у поезда поезда"
+    puts "Задайте число вагонов у поезда"
     wagon_count = gets.chomp.to_i
 
     train = create_train(train_number, train_type, wagon_count)
@@ -251,10 +251,10 @@ class RailRoad
         puts "1 - Добавить станцию в маршрут"
         puts "2 - Удалить станцию из маршрута"
         puts "0 - Маршрут готов"
-        route_control = gets.chomp.to_i
-        break if route_control == 0
+        action = gets.chomp.to_i
+        break if action == 0
   
-        case route_control
+        case action
         when 1
           station_index_for_add = select_from_list(stations, 'станцию', :stations_list)
           routes[route_index].add_station(stations[station_index_for_add])

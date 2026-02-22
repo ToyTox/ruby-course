@@ -93,6 +93,7 @@ class Train
   def validate!
     raise "Номер не может быть nil или пустым" if number.nil?
     raise "Не корректный номер поезда - #{number}" if number !~ REGEXP_TRAIN_NUMBER
+    true
   end
 
   protected
