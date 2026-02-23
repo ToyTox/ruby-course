@@ -1,8 +1,10 @@
+class ValidatorError < StandardError; end
+
 module Validator
   def valid?
     validate!
     true
-  rescue RuntimeError
+  rescue ValidationError
     false
   end
 end
