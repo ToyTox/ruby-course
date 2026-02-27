@@ -1,5 +1,5 @@
 class CargoWagon < Wagon
-  attr_reader volume
+  attr_reader :volume
 
   def initialize(volume)
     super(:cargo)
@@ -8,9 +8,9 @@ class CargoWagon < Wagon
   end
 
   def take_volume(count)
-    return if count > @volume
+    return if (@total_taken_volume + count) > @volume
 
-    sefl.total_taken_volume += count
+    @total_taken_volume += count
   end
 
   def total_taken_volume
