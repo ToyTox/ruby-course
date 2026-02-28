@@ -26,6 +26,10 @@ class Station
     trains << train
   end
 
+  def all_trains
+    trains.each { |train| yield(train) }
+  end
+
   def remove_train(train)
     trains.delete(train)
   end
