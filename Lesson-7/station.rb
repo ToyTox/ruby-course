@@ -27,7 +27,11 @@ class Station
   end
 
   def all_trains
-    trains.each { |train| yield(train) }
+    if block_given?
+      trains.each { |train| yield(train) }
+    else
+      trains
+    end
   end
 
   def remove_train(train)
