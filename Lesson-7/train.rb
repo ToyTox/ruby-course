@@ -27,6 +27,10 @@ class Train
     register_instance
   end
 
+  def all_wagons
+    wagons.each { |wagon| yield(wagon) } if block_given?
+  end
+
   def speed_up
     self.speed += 10
   end
