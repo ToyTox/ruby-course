@@ -72,11 +72,11 @@ class Train
     [previous_station, current_station, next_station]
   end
 
-  def create_wagons(count, type)
+  def create_wagons(count, type, wagon_option)
     return unless count.is_a?(Integer) && count.positive?
 
     count.times do
-      wagon = type == :passenger ? PassengerWagon.new : CargoWagon.new
+      wagon = type == :passenger ? PassengerWagon.new(wagon_option) : CargoWagon.new(wagon_option)
       wagons << wagon
     end
   end

@@ -144,13 +144,13 @@ class RailRoad
 
   def seed_trains
     train_data = [
-      {number: 'a12-31', type: :cargo, wagons_count: 3, station_idx: 0},
-      {number: 'ab123', type: :passenger, wagons_count: 1, station_idx: 1},
-      {number: '12234', type: :cargo, wagons_count: 5, station_idx: 2}
+      {number: 'a12-31', type: :cargo, wagons_count: 3, wagons_option: 5500, station_idx: 0},
+      {number: 'ab123', type: :passenger, wagons_count: 1, wagons_option: 30, station_idx: 1},
+      {number: '12234', type: :cargo, wagons_count: 5, wagons_option: 8700, station_idx: 2}
     ]
 
     train_data.each do |data|
-      train = create_train(data[:number], data[:type], data[:wagons_count])
+      train = create_train(data[:number], data[:type], data[:wagons_count], data[:wagon_option])
       stations[data[:station_idx]].add_train(train)
     end
   end
@@ -197,11 +197,18 @@ class RailRoad
     puts "2 - Грузовой"
     train_type_index = gets.chomp.to_i
     train_type = train_type_index == 1 ? PASSENGER_TYPE : CARGO_TYPE
+
+    if train_type == PASSENGER_TYPE
+      puts "Задайте число мест в вагоне"
+    else
+      puts "Задайте общий объем вагона"
+    end
+    wagon_option = gets.chomp.to_i
     
     puts "Задайте число вагонов у поезда"
     wagon_count = gets.chomp.to_i
 
-    train = create_train(train_number, train_type, wagon_count)
+    train = create_train(train_number, train_type, wagon_count, wagon_option)
 
     puts "Поезд номер #{train_number} создан"
     stations[station_index].add_train(train)
@@ -220,10 +227,10 @@ class RailRoad
     end
   end
 
-  def create_train(number, type, wagons_count)
+  def create_train(number, type, wagons_count, wagon_option)
     train_class = type == PASSENGER_TYPE ? PassengerTrain : CargoTrain
     train = train_class.new(number)
-    train.create_wagons(wagons_count, type)
+    train.create_wagons(wagons_count, type, wagon_option)
     train
   end
 
