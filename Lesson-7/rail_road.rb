@@ -33,6 +33,7 @@ class RailRoad
       puts "7 - Отцепить вагон от поезда"
       puts "8 - Отправить поезд на станцию"
       puts "9 - Посмотреть список поездов на станции"
+      puts "10 - Список поездов на станциях"
       puts "0 - Выход"
 
       user_choice = gets.chomp.to_i
@@ -115,6 +116,9 @@ class RailRoad
       when 9
         puts "Список поездов на станции"
         trains_list_on_station
+      when 10
+        puts "Список поездов на станциях"
+        all_trains_list
       when 0
         puts "Досвидания"
         break
@@ -145,6 +149,8 @@ class RailRoad
   def seed_trains
     train_data = [
       {number: 'a12-31', type: :cargo, wagons_count: 3, wagons_option: 5500, station_idx: 0},
+      {number: 'a12-32', type: :cargo, wagons_count: 4, wagons_option: 5501, station_idx: 0},
+      {number: 'a12-33', type: :cargo, wagons_count: 5, wagons_option: 5502, station_idx: 0},
       {number: 'ab123', type: :passenger, wagons_count: 1, wagons_option: 30, station_idx: 1},
       {number: '12234', type: :cargo, wagons_count: 5, wagons_option: 8700, station_idx: 2}
     ]
@@ -310,6 +316,14 @@ class RailRoad
   end
   
   # Helpers
+
+  def all_trains_list
+    stations.each do |station|
+      puts "На станции #{station.name} стоят поезда"
+      station.all_trains { |train| puts "Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagons.size} вагон(а/ов)" }
+      puts
+    end
+  end
 
   def select_from_list(collection, item_name, display_method)
     return nil if collection.empty?
