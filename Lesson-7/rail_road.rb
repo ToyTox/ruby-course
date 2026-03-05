@@ -156,7 +156,7 @@ class RailRoad
     ]
 
     train_data.each do |data|
-      train = create_train(data[:number], data[:type], data[:wagons_count], data[:wagon_option])
+      train = create_train(data[:number], data[:type], data[:wagons_count], data[:wagons_option])
       stations[data[:station_idx]].add_train(train)
     end
   end
@@ -320,7 +320,18 @@ class RailRoad
   def all_trains_list
     stations.each do |station|
       puts "На станции #{station.name} стоят поезда"
-      station.all_trains { |train| puts "Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagons.size} вагон(а/ов)" }
+      station.all_trains do |train|
+        return unless train
+
+         puts "Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagons.size} вагон(а/ов)"
+         train.all_wagons do |wagon|
+          if wagon.type == PASSENGER_TYPE
+            puts "Вагон номер #{rand(1000..9999)}, типа #{wagon.type}, кол-во свободных мест - #{wagon.free_seats} и занятых мест - #{wagon.taken_seats}"
+          else
+            puts "Вагон номер #{rand(1000..9999)}, типа #{wagon.type}, кол-во свободных мест - #{wagon.remaining_volume} и занятых мест - #{wagon.total_taken_volume}"
+          end
+         end
+      end
       puts
     end
   end
