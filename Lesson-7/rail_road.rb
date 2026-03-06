@@ -299,7 +299,8 @@ class RailRoad
     train = stations[station_index].trains[train_index]
 
     if action == 'add'
-      wagon = train.type == :passenger ? PassengerWagon.new : CargoWagon.new
+      wagon_options = wagon_option(train.type)
+      wagon = train.type == :passenger ? PassengerWagon.new(wagon_options) : CargoWagon.new(wagon_options)
       if train.wagon_type_matches?(wagon)
         train.add_wagon(wagon)
       else
@@ -317,6 +318,15 @@ class RailRoad
   
   # Helpers
 
+  def wagon_option(wagon_type)
+    if wagon_type == PASSENGER_TYPE
+      puts "Укажите сколько мест для посадки в вагоне"
+    else
+      puts "Укажите какого объема грузовой вагон"
+    end
+    return wagon_option = gets.chomp.to_i
+  end
+
   def all_trains_list
     stations.each do |station|
       puts "На станции #{station.name} стоят поезда"
@@ -328,7 +338,7 @@ class RailRoad
           if wagon.type == PASSENGER_TYPE
             puts "Вагон номер #{rand(1000..9999)}, типа #{wagon.type}, кол-во свободных мест - #{wagon.free_seats} и занятых мест - #{wagon.taken_seats}"
           else
-            puts "Вагон номер #{rand(1000..9999)}, типа #{wagon.type}, кол-во свободных мест - #{wagon.remaining_volume} и занятых мест - #{wagon.total_taken_volume}"
+            puts "Вагон номер #{rand(1000..9999)}, типа #{wagon.type}, кол-во свободного объема - #{wagon.remaining_volume} и занятого объема - #{wagon.total_taken_volume}"
           end
          end
       end
