@@ -33,7 +33,9 @@ class RailRoad
       puts "7 - Отцепить вагон от поезда"
       puts "8 - Отправить поезд на станцию"
       puts "9 - Посмотреть список поездов на станции"
-      puts "10 - Список поездов на станциях"
+      puts "10 - Список всех поездов на всех станциях"
+      puts "11 - Список вагонов в поезде"
+      puts "12 - Занимать место или объем в вагоне"
       puts "0 - Выход"
 
       user_choice = gets.chomp.to_i
@@ -117,8 +119,29 @@ class RailRoad
         puts "Список поездов на станции"
         trains_list_on_station
       when 10
-        puts "Список поездов на станциях"
+        puts "Список всех поездов на всех станциях"
         all_trains_list
+      when 11
+        station_index = select_from_list(stations, "станцию", :stations_list)
+
+        puts "Выберите поезд в котором хотите занять место или загрузить груз"
+        trains_list_on_station(station_index)
+        train_index = gets.chomp.to_i - 1
+        train = stations[station_index].trains[train_index]
+
+        if train.type == PASSENGER_TYPE
+          iterator = 1
+          puts "Выберите вагон в котором хотите занять место"
+          train.all_wagons do |wagon|
+            puts iterator - wagon
+            iterator += 1
+          end
+          wagon_index = gets.chomp.to_i - 1
+
+          train.wagons[wagon_index].reservation_seat
+        else
+          # ToDo сделать для грузовых вагонов загрузку
+        end
       when 0
         puts "Досвидания"
         break
