@@ -1,5 +1,6 @@
 class CargoWagon < Wagon
   attr_reader :volume
+  attr_reader :total_taken_volume
 
   def initialize(volume)
     super(:cargo)
@@ -11,10 +12,6 @@ class CargoWagon < Wagon
     return if (@total_taken_volume + count) > @volume
 
     @total_taken_volume += count
-  end
-
-  def total_taken_volume
-    @total_taken_volume
   end
 
   def remaining_volume
