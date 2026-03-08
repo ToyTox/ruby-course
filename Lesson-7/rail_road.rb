@@ -34,8 +34,7 @@ class RailRoad
       puts "8 - Отправить поезд на станцию"
       puts "9 - Посмотреть список поездов на станции"
       puts "10 - Список всех поездов на всех станциях"
-      puts "11 - Список вагонов в поезде"
-      puts "12 - Занимать место или объем в вагоне"
+      puts "11 - Занимать место или объем в вагоне"
       puts "0 - Выход"
 
       user_choice = gets.chomp.to_i
@@ -133,14 +132,26 @@ class RailRoad
           iterator = 1
           puts "Выберите вагон в котором хотите занять место"
           train.all_wagons do |wagon|
-            puts iterator - wagon
+            puts "#{iterator} - #{wagon}"
             iterator += 1
           end
           wagon_index = gets.chomp.to_i - 1
 
           train.wagons[wagon_index].reservation_seat
         else
-          # ToDo сделать для грузовых вагонов загрузку
+          iterator = 1
+          puts "Выберите вагон который хотите загрузить"
+          train.all_wagons do |wagon|
+            puts "#{iterator} - #{wagon}"
+            iterator += 1
+          end
+          wagon_index = gets.chomp.to_i - 1
+
+          puts
+          puts "Введите объем груза"
+          volume = gets.chomp.to_i
+
+          train.wagons[wagon_index].take_volume(volume)
         end
       when 0
         puts "Досвидания"
@@ -347,21 +358,21 @@ class RailRoad
     else
       puts "Укажите какого объема грузовой вагон"
     end
-    return wagon_option = gets.chomp.to_i
+    gets.chomp.to_i
   end
 
   def all_trains_list
     stations.each do |station|
       puts "На станции #{station.name} стоят поезда"
       station.all_trains do |train|
-        return unless train
+        next unless train
 
          puts "Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagons.size} вагон(а/ов)"
          train.all_wagons do |wagon|
           if wagon.type == PASSENGER_TYPE
-            puts "Вагон номер #{rand(1000..9999)}, типа #{wagon.type}, кол-во свободных мест - #{wagon.free_seats} и занятых мест - #{wagon.taken_seats}"
+            puts "Вагон номер #{wagon.name}, типа #{wagon.type}, кол-во свободных мест - #{wagon.free_seats} и занятых мест - #{wagon.taken_seats}"
           else
-            puts "Вагон номер #{rand(1000..9999)}, типа #{wagon.type}, кол-во свободного объема - #{wagon.remaining_volume} и занятого объема - #{wagon.total_taken_volume}"
+            puts "Вагон номер #{wagon.name}, типа #{wagon.type}, кол-во свободного объема - #{wagon.remaining_volume} и занятого объема - #{wagon.total_taken_volume}"
           end
          end
       end
