@@ -77,6 +77,7 @@ class Train
 
     count.times do
       wagon = type == :passenger ? PassengerWagon.new(wagon_option) : CargoWagon.new(wagon_option)
+      wagon.name = rand(1000..9999)
       wagons << wagon
     end
   end
