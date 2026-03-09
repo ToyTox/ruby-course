@@ -4,7 +4,7 @@ module Validator
   def valid?
     validate!
     true
-  rescue ValidationError
+  rescue ValidatorError
     false
   end
 end
