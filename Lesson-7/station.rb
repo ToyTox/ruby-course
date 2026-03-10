@@ -15,11 +15,11 @@ class Station
 
   def initialize(name)
     @name = name
-    validate!
+    valid?
+    # validate!
     @trains = []
     @@stations << self
     register_instance
-    valid?
   end
 
   def add_train(train)
@@ -43,8 +43,8 @@ class Station
   end
 
   def validate!
-    raise "Имя станции не может быть nil" if name.nil?
-    raise "Имя станции не может быть пустым" if name.strip.empty?
-    raise "Имя не может быть короче 2 симыолов" if name.strip.length < MIN_NAME_LENGTH
+    raise ValidatorError, "Имя станции не может быть nil" if name.nil?
+    raise ValidatorError, "Имя станции не может быть пустым" if name.strip.empty?
+    raise ValidatorError, "Имя не может быть короче 2 симыолов" if name.strip.length < MIN_NAME_LENGTH
   end
 end
