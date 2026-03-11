@@ -1,6 +1,6 @@
 class RailRoad
-  attr_accessor :stations
-  attr_accessor :routes
+  attr_reader :stations
+  attr_reader :routes
 
   # Тип поездов
   PASSENGER_TYPE = :passenger
@@ -131,21 +131,21 @@ class RailRoad
         train = stations[station_index].trains[train_index]
 
         if train.type == PASSENGER_TYPE
-          iterator = 1
+          # iterator = 1
           puts "Выберите вагон в котором хотите занять место"
-          train.all_wagons do |wagon|
-            puts "#{iterator} - #{wagon}"
-            iterator += 1
+          train.all_wagons do |wagon, index|
+            puts "#{index + 1} - #{wagon}"
+            # iterator += 1
           end
           wagon_index = gets.chomp.to_i - 1
 
           train.wagons[wagon_index].reservation_seat
         else
-          iterator = 1
+          # iterator = 1
           puts "Выберите вагон который хотите загрузить"
-          train.all_wagons do |wagon|
-            puts "#{iterator} - #{wagon}"
-            iterator += 1
+          train.all_wagons do |wagon, index|
+            puts "#{index + 1} - #{wagon}"
+            # iterator += 1
           end
           wagon_index = gets.chomp.to_i - 1
 

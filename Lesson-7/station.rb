@@ -45,6 +45,6 @@ class Station
   def validate!
     raise ValidatorError, "Имя станции не может быть nil" if name.nil?
     raise ValidatorError, "Имя станции не может быть пустым" if name.strip.empty?
-    raise ValidatorError, "Имя не может быть короче 2 симыолов" if name.strip.length < MIN_NAME_LENGTH
+    raise ValidatorError, "Имя не может быть короче #{MIN_NAME_LENGTH} символов" if name.strip.length < MIN_NAME_LENGTH
   end
 end
