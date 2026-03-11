@@ -28,7 +28,7 @@ class Train
   end
 
   def all_wagons
-    wagons.each_with_index { |wagon| yield(wagon) } if block_given?
+    wagons.each_with_index { |wagon, index| yield(wagon, index) } if block_given?
   end
 
   def speed_up
