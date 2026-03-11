@@ -99,7 +99,9 @@ class RailRoad
         direction = gets.chomp.to_i
 
         train = stations[station_index].trains[train_index]
-        if direction == DIRECTION_FORWARD && train.next_station
+        if train.route.nil?
+          puts "У поезда нет маршрута"
+        elsif direction == DIRECTION_FORWARD && train.next_station
           train.current_station.remove_train(train)
           train.next_station.add_train(train)
           train.move_forward
@@ -113,7 +115,7 @@ class RailRoad
           puts "Поезд уже на первой станции маршрута"
         end
 
-        puts "Поезд N#{train.number} переместился на станцию #{train.current_station.name}"
+        puts "Поезд N#{train.number} переместился на станцию #{train.current_station.name}" if train.route
       when 9
         puts "Список поездов на станции"
         trains_list_on_station
