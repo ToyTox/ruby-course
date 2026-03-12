@@ -365,14 +365,14 @@ class RailRoad
       station.all_trains do |train|
         next unless train
 
-         puts "Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagons.size} вагон(а/ов)"
-         train.all_wagons do |wagon|
+        puts "Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagons.size} вагон(а/ов)"
+        train.all_wagons do |wagon|
           if wagon.type == PASSENGER_TYPE
             puts "Вагон номер #{wagon.name}, типа #{wagon.type}, кол-во свободных мест - #{wagon.free_seats} и занятых мест - #{wagon.taken_seats}"
           else
             puts "Вагон номер #{wagon.name}, типа #{wagon.type}, кол-во свободного объема - #{wagon.remaining_volume} и занятого объема - #{wagon.total_taken_volume}"
           end
-         end
+        end
       end
       puts
     end

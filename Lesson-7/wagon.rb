@@ -10,8 +10,6 @@ class Wagon
     # validate!
   end
 
-  protected
-
   def validate!
     raise ValidatorError, "Тип вагона не может быть nil" if type.nil?
     raise ValidatorError, "Тип вагона должен быть :passenger или :cargo" unless %i[passenger cargo].include?(type)
