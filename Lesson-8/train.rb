@@ -1,15 +1,14 @@
+# frozen_string_literal: true
+
 class Train
   include CompanyName
   include InstanceCounter
   include Validator
 
   attr_accessor :speed
-  attr_reader :number
-  attr_reader :type
-  attr_reader :wagons
-  attr_reader :route
+  attr_reader :number, :type, :wagons, :route
 
-  REGEXP_TRAIN_NUMBER = /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/i
+  REGEXP_TRAIN_NUMBER = /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/i.freeze
 
   @@trains = {}
 
@@ -27,8 +26,8 @@ class Train
     register_instance
   end
 
-  def all_wagons
-    wagons.each_with_index { |wagon, index| yield(wagon, index) } if block_given?
+  def all_wagons(&block)
+    wagons.each_with_index(&block) if block_given?
   end
 
   def speed_up
@@ -36,7 +35,7 @@ class Train
   end
 
   def speed_down
-    self.speed -= 10 if speed > 0
+    self.speed -= 10 if speed.positive?
   end
 
   def set_route(route)
@@ -46,17 +45,20 @@ class Train
 
   def next_station
     return nil unless route
+
     route.stations[current_station_index + 1]
   end
 
   def previous_station
     return nil unless route
     return nil if current_station_index <= 0
+
     route.stations[current_station_index - 1]
   end
 
   def current_station
     return nil unless route
+
     route.stations[current_station_index]
   end
 
@@ -87,20 +89,22 @@ class Train
   end
 
   def remove_wagon
-    wagons.pop if wagons.size > 0
+    wagons.pop if wagons.size.positive?
   end
 
   def wagon_type_matches?(wagon)
-    (self.type == :cargo && wagon.type == :cargo) ||
-    (self.type == :passenger && wagon.type == :passenger)
+    (type == :cargo && wagon.type == :cargo) ||
+      (type == :passenger && wagon.type == :passenger)
   end
 
   def validate!
-    raise ValidatorError, "Номер не может быть nil или пустым" if number.nil?
+    raise ValidatorError, 'Номер не может быть nil или пустым' if number.nil?
     raise ValidatorError, "Не корректный номер поезда - #{number}" if number !~ REGEXP_TRAIN_NUMBER
+
     true
   end
 
   protected
+
   attr_writer :current_station_index
 end

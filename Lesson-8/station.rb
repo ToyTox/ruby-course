@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 class Station
   include InstanceCounter
   include Validator
 
   MIN_NAME_LENGTH = 2
 
-  attr_reader :trains
-  attr_reader :name
+  attr_reader :trains, :name
 
   @@stations = []
 
@@ -26,9 +27,9 @@ class Station
     trains << train
   end
 
-  def all_trains
+  def all_trains(&block)
     if block_given?
-      trains.each { |train| yield(train) }
+      trains.each(&block)
     else
       trains
     end
@@ -43,8 +44,8 @@ class Station
   end
 
   def validate!
-    raise ValidatorError, "Имя станции не может быть nil" if name.nil?
-    raise ValidatorError, "Имя станции не может быть пустым" if name.strip.empty?
+    raise ValidatorError, 'Имя станции не может быть nil' if name.nil?
+    raise ValidatorError, 'Имя станции не может быть пустым' if name.strip.empty?
     raise ValidatorError, "Имя не может быть короче #{MIN_NAME_LENGTH} символов" if name.strip.length < MIN_NAME_LENGTH
   end
 end

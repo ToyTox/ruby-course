@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class CargoWagon < Wagon
-  attr_reader :volume
-  attr_reader :total_taken_volume
+  attr_reader :volume, :total_taken_volume
 
   def initialize(volume)
     super(:cargo)
