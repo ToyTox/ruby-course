@@ -16,6 +16,15 @@ class RailRoad
   MENU_CREATE_TRAIN = 2
   MENU_EXIT = 0
 
+  # Seed train data
+  SEED_TRAIN_DATA = [
+    { number: 'a12-31', type: :cargo, wagons_count: 3, wagons_option: 5500, station_idx: 0 },
+    { number: 'a12-32', type: :cargo, wagons_count: 4, wagons_option: 5501, station_idx: 0 },
+    { number: 'a12-33', type: :cargo, wagons_count: 5, wagons_option: 5502, station_idx: 0 },
+    { number: 'ab123', type: :passenger, wagons_count: 1, wagons_option: 30, station_idx: 1 },
+    { number: '12234', type: :cargo, wagons_count: 5, wagons_option: 8700, station_idx: 2 }
+  ]
+
   def initialize
     @stations = []
     @routes = []
@@ -78,8 +87,9 @@ class RailRoad
         puts 'Выберите поезд, которому хотите назначить маршрут'
         train_index = gets.chomp.to_i - 1
 
-        station.trains[train_index].set_route(routes[route_index])
-        puts "Поезду N #{station.trains[train_index].number} присвоен маршрут #{routes[route_index].start_station.name} - #{routes[route_index].end_station.name}"
+        station.trains[train_index].assign_route(routes[route_index])
+        puts "Поезду N #{station.trains[train_index].number} присвоен маршрут " \
+             "#{routes[route_index].start_station.name} - #{routes[route_index].end_station.name}"
       when 6
         wagon_control('add')
       when 7
@@ -177,15 +187,7 @@ class RailRoad
   end
 
   def seed_trains
-    train_data = [
-      { number: 'a12-31', type: :cargo, wagons_count: 3, wagons_option: 5500, station_idx: 0 },
-      { number: 'a12-32', type: :cargo, wagons_count: 4, wagons_option: 5501, station_idx: 0 },
-      { number: 'a12-33', type: :cargo, wagons_count: 5, wagons_option: 5502, station_idx: 0 },
-      { number: 'ab123', type: :passenger, wagons_count: 1, wagons_option: 30, station_idx: 1 },
-      { number: '12234', type: :cargo, wagons_count: 5, wagons_option: 8700, station_idx: 2 }
-    ]
-
-    train_data.each do |data|
+    SEED_TRAIN_DATA.each do |data|
       train = create_train(data[:number], data[:type], data[:wagons_count], data[:wagons_option])
       stations[data[:station_idx]].add_train(train)
     end
@@ -224,7 +226,7 @@ class RailRoad
     station_index = select_from_list(stations, 'станцию', :stations_list)
     return unless station_index
 
-    train_number = get_valid_train_number
+    train_number = validate_train_number
 
     puts 'Выберите тип поезда:'
     puts '1 - Пассажирский'
@@ -248,7 +250,7 @@ class RailRoad
     stations[station_index].add_train(train)
   end
 
-  def get_valid_train_number
+  def validate_train_number
     puts 'Задайте номер поезда формата ХХХ-ХХ или ХХХХХ'
     number = gets.chomp
     raise 'Номер не может быть пустым' if number.empty?
@@ -361,9 +363,11 @@ class RailRoad
         puts "Поезд номер #{train.number}, типа #{train.type}, в составе #{train.wagons.size} вагон(а/ов)"
         train.all_wagons do |wagon|
           if wagon.type == PASSENGER_TYPE
-            puts "Вагон номер #{wagon.name}, типа #{wagon.type}, кол-во свободных мест - #{wagon.free_seats} и занятых мест - #{wagon.taken_seats}"
+            puts "Вагон номер #{wagon.name}, типа #{wagon.type}, кол-во свободных мест - " \
+                 "#{wagon.free_seats} и занятых мест - #{wagon.taken_seats}"
           else
-            puts "Вагон номер #{wagon.name}, типа #{wagon.type}, кол-во свободного объема - #{wagon.remaining_volume} и занятого объема - #{wagon.total_taken_volume}"
+            puts "Вагон номер #{wagon.name}, типа #{wagon.type}, кол-во свободного объема - " \
+                 "#{wagon.remaining_volume} и занятого объема - #{wagon.total_taken_volume}"
           end
         end
       end

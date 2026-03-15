@@ -38,7 +38,7 @@ class Train
     self.speed -= 10 if speed.positive?
   end
 
-  def set_route(route)
+  def assign_route(route)
     @route = route
     @current_station_index = 0
   end
