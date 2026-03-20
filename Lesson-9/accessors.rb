@@ -7,3 +7,9 @@ module Accessors
     end
   end
 end
+
+Accessors.module_eval(name) do
+  def _history
+    puts name
+  end
+end
