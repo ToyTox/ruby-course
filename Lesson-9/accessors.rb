@@ -17,8 +17,7 @@ module Accessors
           instance_variable_set(var_name, value)
         end
 
-
-        define_method("#{name}=".to_sym) { |value| instance_variable_set(var_name, value) }
+        define_method("#{name}_history") { instance_variable_get(history_var) || [] }
       end
     end
 
