@@ -13,7 +13,7 @@ module Accessors
         define_method("#{name}=") do |value|
           history = innstance_variable_get(history_var) || []
           history << value
-          instance_variable_set(vistory_var, history)
+          instance_variable_set(history_var, history)
           instance_variable_set(var_name, value)
         end
 
@@ -21,7 +21,15 @@ module Accessors
       end
     end
 
-    def strong_attr_accessor
+    def strong_attr_accessor(name, klass)
+      var_name = "@#{name}"
+
+      define_method(name) { instance_variable_get(var_name) }
+
+      define_method("#{name}=") do |value|
+        raise TypeError, "Ожидается #{klass}, получили #{value.class}" unless value.is_a?(klass)
+        instance_variable_set(var_name, value)
+      end
     end
   end
 end
