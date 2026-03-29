@@ -5,9 +5,16 @@ module Validation
 
   module ClassMethods
     def validate(attr_name, validate_type, **attrs)
-      define_method()
-      if validate_type == :presence
-        raise TypeError, "#{attr_name} не может быть nil или пустой строкой" if attr_name == nil || ''
+      def attrs
+        @attrs ||= []
+      end
+
+      def validate(checks)
+        attrs << checks
+      end
+
+      def run_validate
+        self.class.attrs.each { |attr| send(attr) }
       end
       # ToDo write validate method
     end
