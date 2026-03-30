@@ -4,19 +4,16 @@ module Validation
   end
 
   module ClassMethods
-    def validate(attr_name, validate_type, **attrs)
-      def attrs
-        @attrs ||= []
-      end
+    def attrs
+      @attrs ||= []
+    end
 
-      def validate(checks)
-        attrs << checks
-      end
+    def validate(name, type, **options)
+      attrs << name
+    end
 
-      def run_validate
-        self.class.attrs.each { |attr| send(attr) }
-      end
-      # ToDo write validate method
+    def run_validate
+      self.class.attrs.each { |attr| send(attr) }
     end
   end
 end
