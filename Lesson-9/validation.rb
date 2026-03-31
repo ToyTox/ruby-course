@@ -1,6 +1,7 @@
 module Validation
   def self.included(base)
     base.extend(ClassMethods)
+    base.send include, InstanceMethods
   end
 
   module ClassMethods
@@ -8,12 +9,11 @@ module Validation
       @attrs ||= []
     end
 
-    def validate(name, type, **options)
-      attrs << name
+    def validate(name, type, *args)
+      attrs << {name: name, type: type, args: args}
     end
+  end
 
-    def run_validate
-      self.class.attrs.each { |attr| send(attr) }
-    end
+  module InstanceMethods
   end
 end
