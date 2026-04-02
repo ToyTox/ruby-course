@@ -27,10 +27,22 @@ module Validation
     def valid?
       validate!
       true
-    rescue StandardError
+    rescue ValidatorError
       false
     end
 
     protected
+
+    def validate_presence(name)
+      raise "Параметр nil или пуст" if name.nil? || name.empty?
+    end
+
+    def validate_format(name, format)
+      raise "Параметр не соответствует формату" if name !~ format
+    end
+
+    def validate_type(name, type)
+      raise "Параметр не верного типа" if name.class != type
+    end
   end
 end
