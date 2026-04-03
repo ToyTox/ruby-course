@@ -34,15 +34,15 @@ module Validation
     protected
 
     def validate_presence(name)
-      raise "Параметр nil или пуст" if name.nil? || name.empty?
+      raise ValidatorError, "Параметр nil или пуст" if name.nil? || name.to_s.empty?
     end
 
     def validate_format(name, format)
-      raise "Параметр не соответствует формату" if name !~ format
+      raise ValidatorError, "Параметр не соответствует формату" if name !~ format
     end
 
     def validate_type(name, type)
-      raise "Параметр не верного типа" if name.class != type
+      raise ValidatorError, "Параметр не верного типа" unless name.is_a?(type)
     end
   end
 end
