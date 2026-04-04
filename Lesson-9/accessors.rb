@@ -7,11 +7,11 @@ module Accessors
     def attr_accessor_with_history(*names)
       names.each do |name|
         var_name = "@#{name}"
-        history_var = "#{name}_history"
+        history_var = "@#{name}_history"
         define_method(name) { instance_variable_get(var_name) }
 
         define_method("#{name}=") do |value|
-          history = innstance_variable_get(history_var) || []
+          history = instance_variable_get(history_var) || []
           history << value
           instance_variable_set(history_var, history)
           instance_variable_set(var_name, value)
